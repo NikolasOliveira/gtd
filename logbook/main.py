@@ -36,7 +36,7 @@ class LogBook(object):
 
     def load_file(self, filename):
         def load():
-            if not os.path.exists(filename):
+            if not filename or not os.path.exists(filename):
                 return dict()
             with open(filename) as fd:
                 return yaml.load(fd)

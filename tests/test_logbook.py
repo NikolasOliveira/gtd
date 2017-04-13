@@ -1,6 +1,8 @@
 import unittest
 import re
 import os
+import tempfile
+import shutil
 from logbook.main import LogBook
 
 CURR_DIR = os.path.dirname(__file__)
@@ -38,3 +40,14 @@ class LogBookTest(unittest.TestCase):
         self.lb.create_today_file()
         assert os.path.exists(self.lb.current_file)
 
+
+class FromScratch(unittest.TestCase):
+    def test_create_file_for_today_from_scratch(self):
+        directory = tempfile.mkdtemp()
+        try:
+            self.lb = LogBook(directory)
+            self.lb.create_today_file()
+            assert os.path.exists(self.lb.current_file)
+        finally:
+            shutil.rmtree(directory)
+        
