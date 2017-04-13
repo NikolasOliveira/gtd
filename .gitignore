@@ -1,0 +1,6 @@
+.cache/
+.coverage
+*.egg-info/
+venv/
+*.swp
+__pycache__/
