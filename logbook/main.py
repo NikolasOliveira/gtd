@@ -32,7 +32,6 @@ class LogBook(object):
                 logger.debug('Found file matching patter: %s' % filename)
                 return os.path.join(self.directory, filename)
         logger.debug('no files found')
-        
 
     def load_file(self, filename):
         def load():
@@ -73,6 +72,7 @@ class LogBook(object):
 def process(args):
     for filename in os.listdir(args.directory):
         print(filename)
+
 
 def main():
     parser = argparse.ArgumentParser(description="Simple TODO list")

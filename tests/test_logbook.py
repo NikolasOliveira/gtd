@@ -7,7 +7,7 @@ from logbook.main import LogBook
 
 CURR_DIR = os.path.dirname(__file__)
 TEST_DIR = os.path.join(CURR_DIR, 'examples')
-EXAMPLE1_DIR= os.path.join(TEST_DIR, '1')
+EXAMPLE1_DIR = os.path.join(TEST_DIR, '1')
 
 
 class LogBookTest(unittest.TestCase):
@@ -17,7 +17,10 @@ class LogBookTest(unittest.TestCase):
             os.remove(self.lb.current_file)
 
     def test_current_file_name(self):
-        assert re.match('%s/\d{4}-\d{2}-\d{2}-logbook.yaml' % EXAMPLE1_DIR, self.lb.current_file)
+        assert re.match(
+                '%s/\d{4}-\d{2}-\d{2}-logbook.yaml' % EXAMPLE1_DIR,
+                self.lb.current_file
+                )
 
     def test_last_file(self):
         assert self.lb.last_file.endswith('2017-04-01-logbook.yaml')
@@ -39,7 +42,7 @@ class LogBookTest(unittest.TestCase):
     def test_create_file_for_today(self):
         self.lb.create_today_file()
         assert os.path.exists(self.lb.current_file)
-        assert False
+
 
 class FromScratch(unittest.TestCase):
     def test_create_file_for_today_from_scratch(self):
@@ -50,4 +53,3 @@ class FromScratch(unittest.TestCase):
             assert os.path.exists(self.lb.current_file)
         finally:
             shutil.rmtree(directory)
-        
