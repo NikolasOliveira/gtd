@@ -53,30 +53,21 @@ class LogBook(object):
     def create_today_file(self):
         content = self.load_file(self.last_file)
         with open(self.current_file, 'w+') as fd:
-            data = content[self.KEYWORD_TODO]
-            fd.write('%s:\n' % self.KEYWORD_TODO)
-            if data:
-                fd.write(yaml.dump(data, default_flow_style=False))
-            else:
+            operations = (
+                (self.KEYWORD_TODO, False),
+                (self.KEYWORD_ACCOMPLISHED, False),
+                (self.KEYWORD_FUTURE, False),
+            )
+            for key, sort in operations:
+                data = content[key]
+                fd.write('%s:\n' % key)
+                if data:
+                    if sort:
+                        data.sort()
+                    fd.write(yaml.dump(data, default_flow_style=False))
+                else:
+                    fd.write('\n')
                 fd.write('\n')
-            fd.write('\n')
-
-            data = content[self.KEYWORD_ACCOMPLISHED]
-            fd.write('%s:\n' % self.KEYWORD_ACCOMPLISHED)
-            if data:
-                fd.write(yaml.dump(data, default_flow_style=False))
-            else:
-                fd.write('\n\n')
-            fd.write('\n')
-        
-            data = content[self.KEYWORD_FUTURE]
-            fd.write('%s:\n' % self.KEYWORD_FUTURE)
-            if data:
-                data.sort()
-                fd.write(yaml.dump(data, default_flow_style=False))
-            else:
-                fd.write('\n\n')
-            fd.write('\n')
 
 
 def process(args):

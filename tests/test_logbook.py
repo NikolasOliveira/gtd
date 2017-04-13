@@ -39,7 +39,7 @@ class LogBookTest(unittest.TestCase):
     def test_create_file_for_today(self):
         self.lb.create_today_file()
         assert os.path.exists(self.lb.current_file)
-
+        assert False
 
 class FromScratch(unittest.TestCase):
     def test_create_file_for_today_from_scratch(self):
