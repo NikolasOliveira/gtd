@@ -65,7 +65,7 @@ class LogBook(object):
                 continue
             content[self.KEYWORD_TODO].append(m.group('msg').strip())
         content[self.KEYWORD_BACKLOG] = backlog
-            
+
         with open(self.current_file, 'w+') as fd:
             operations = (
                 (self.KEYWORD_TODO, False),

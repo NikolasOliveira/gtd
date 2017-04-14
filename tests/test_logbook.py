@@ -56,12 +56,12 @@ class FromScratchTest(unittest.TestCase):
         finally:
             shutil.rmtree(directory)
 
-class BacklogTest(unittest.TestCase):
 
+class BacklogTest(unittest.TestCase):
     def setUp(self):
         self.directory = tempfile.mkdtemp()
         self.lb = LogBook(self.directory)
-        
+
         if os.path.exists(self.lb.current_file):
             os.remove(self.lb.current_file)
 
@@ -71,25 +71,25 @@ class BacklogTest(unittest.TestCase):
     def test_no_date_wont_change_anything(self):
         filename = os.path.join(self.directory, "2017-01-01-logbook.yaml")
         data = dict(
-            Backlog = ['whatever']
+            Backlog=['whatever']
         )
         with open(filename, 'w+') as fd:
             yaml.dump(data, fd)
         self.lb.create_today_file()
         content = self.lb.load_file(self.lb.current_file)
-        assert not content['TODO'] 
+        assert not content['TODO']
 
     def test_date_will_move_to_todo(self):
         filename = os.path.join(self.directory, "2017-01-01-logbook.yaml")
         today = datetime.datetime.now().strftime("%Y-%m-%d")
         data = dict(
-            Backlog = ['[%s] whatever' % today]
+            Backlog=['[%s] whatever' % today]
         )
         with open(filename, 'w+') as fd:
             yaml.dump(data, fd)
         self.lb.create_today_file()
         content = self.lb.load_file(self.lb.current_file)
-        assert not content['Backlog'] 
+        assert not content['Backlog']
         assert content['TODO'] == ['whatever']
 
     def test_several_dates(self):
@@ -102,7 +102,7 @@ class BacklogTest(unittest.TestCase):
         future_task = '[%s] future' % tomorrow.strftime("%Y-%m-%d")
         any_task = 'anything'
         data = dict(
-            Backlog = [
+            Backlog=[
                 past_task,
                 current_task,
                 future_task,
