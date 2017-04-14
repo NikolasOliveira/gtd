@@ -51,6 +51,21 @@ class LogBook(object):
 
     def create_today_file(self):
         content = self.load_file(self.last_file)
+        content[self.KEYWORD_ACCOMPLISHED] = None
+        backlog = []
+
+        for line in content[self.KEYWORD_BACKLOG]:
+            m = re.match('\[(?P<date>\d{4}-\d{2}-\d{2})\](?P<msg>.*)', line)
+            if not m:
+                backlog.append(line)
+                continue
+            date = datetime.datetime.strptime(m.group('date'), '%Y-%m-%d')
+            if date > datetime.datetime.now():
+                backlog.append(line)
+                continue
+            content[self.KEYWORD_TODO].append(m.group('msg').strip())
+        content[self.KEYWORD_BACKLOG] = backlog
+            
         with open(self.current_file, 'w+') as fd:
             operations = (
                 (self.KEYWORD_TODO, False),
