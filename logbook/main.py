@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 class LogBook(object):
     KEYWORD_TODO = 'TODO'
     KEYWORD_ACCOMPLISHED = 'Accomplished'
-    KEYWORD_FUTURE = 'Future'
+    KEYWORD_BACKLOG = 'Backlog'
 
     def __init__(self, directory):
         self.directory = directory
@@ -43,7 +43,7 @@ class LogBook(object):
         for key in (
                 self.KEYWORD_TODO,
                 self.KEYWORD_ACCOMPLISHED,
-                self.KEYWORD_FUTURE,
+                self.KEYWORD_BACKLOG,
                 ):
             if key not in content or content[key] is None:
                 content[key] = []
@@ -55,7 +55,7 @@ class LogBook(object):
             operations = (
                 (self.KEYWORD_TODO, False),
                 (self.KEYWORD_ACCOMPLISHED, False),
-                (self.KEYWORD_FUTURE, False),
+                (self.KEYWORD_BACKLOG, False),
             )
             for key, sort in operations:
                 data = content[key]

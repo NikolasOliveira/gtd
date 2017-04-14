@@ -27,7 +27,7 @@ class LogBookTest(unittest.TestCase):
 
     def test_load_file_that_does_not_exist(self):
         content = self.lb.load_file(os.path.join(EXAMPLE1_DIR, 'fake'))
-        assert content == dict(TODO=[], Accomplished=[], Future=[])
+        assert content == dict(TODO=[], Accomplished=[], Backlog=[])
 
     def test_load_file(self):
         filename = os.path.join(EXAMPLE1_DIR, '2017-01-01-logbook.yaml')
@@ -36,15 +36,15 @@ class LogBookTest(unittest.TestCase):
         assert len(content['TODO']) == 1
         assert 'Accomplished' in content
         assert content['Accomplished'] == []
-        assert 'Future' in content
-        assert content['Future'] == []
+        assert 'Backlog' in content
+        assert content['Backlog'] == []
 
     def test_create_file_for_today(self):
         self.lb.create_today_file()
         assert os.path.exists(self.lb.current_file)
 
 
-class FromScratch(unittest.TestCase):
+class FromScratchTest(unittest.TestCase):
     def test_create_file_for_today_from_scratch(self):
         directory = tempfile.mkdtemp()
         try:
@@ -53,3 +53,6 @@ class FromScratch(unittest.TestCase):
             assert os.path.exists(self.lb.current_file)
         finally:
             shutil.rmtree(directory)
+
+class BacklogTest(unittest.TestCase):
+    pass
