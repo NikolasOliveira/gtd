@@ -92,5 +92,26 @@ class BacklogTest(unittest.TestCase):
         assert not content['Backlog'] 
         assert content['TODO'] == ['whatever']
 
-
-
+    def test_several_dates(self):
+        filename = os.path.join(self.directory, "2017-01-01-logbook.yaml")
+        today = datetime.datetime.now()
+        tomorrow = (today + datetime.timedelta(days=1))
+        yesterday = (today - datetime.timedelta(days=1))
+        past_task = '[%s] past' % yesterday.strftime("%Y-%m-%d")
+        current_task = '[%s] current' % today.strftime("%Y-%m-%d")
+        future_task = '[%s] future' % tomorrow.strftime("%Y-%m-%d")
+        any_task = 'anything'
+        data = dict(
+            Backlog = [
+                past_task,
+                current_task,
+                future_task,
+                any_task,
+            ]
+        )
+        with open(filename, 'w+') as fd:
+            yaml.dump(data, fd)
+        self.lb.create_today_file()
+        content = self.lb.load_file(self.lb.current_file)
+        assert content['Backlog'] == [future_task, any_task]
+        assert content['TODO'] == ['past', 'current']
