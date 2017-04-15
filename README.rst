@@ -50,7 +50,7 @@ Example::
 Roadmap
 -------
 
-TAB_ is fully usable. In the near future it should be able to generate statistics and reports with the activity.
+GTD_ is fully usable. In the near future it should be able to generate statistics and reports with the activity.
 
 
 
@@ -109,6 +109,6 @@ TAB_ is fully usable. In the near future it should be able to generate statistic
 .. _Coveralls: https://coveralls.io/r/magmax/gtd
 
 .. _@magmax9: https://twitter.com/magmax9
-.. _TAB: https://github.com/magmax/gtd
+.. _GTD: https://github.com/magmax/gtd
 .. _`James Hood`: http://jlhood.com
 .. _`The Power of the TODO List`: http://jlhood.com/the-power-of-the-todo-list/
