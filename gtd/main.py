@@ -12,7 +12,7 @@ import yaml
 logger = logging.getLogger(__name__)
 
 
-class TAB(object):
+class Gtd(object):
     KEYWORD_TODO = 'TODO'
     KEYWORD_ACCOMPLISHED = 'Accomplished'
     KEYWORD_BACKLOG = 'Backlog'
@@ -100,7 +100,7 @@ def main():
     DEFAULT_EDITOR = os.environ.get('EDITOR')
     DEFAULT_DIRECTORY = os.path.join(
             os.path.expanduser('~'),
-            '.tab',
+            '.pygtd',
             'backlog'
     )
 
@@ -116,7 +116,7 @@ def main():
     parser.add_argument(
             '-d', '--directory',
             default=DEFAULT_DIRECTORY,
-            help='Directory to be used'
+            help='Directory to be used. "%s" by default' % DEFAULT_DIRECTORY
     )
     parser.add_argument(
             '-e', '--editor',
@@ -126,11 +126,11 @@ def main():
 
     args = parser.parse_args()
 
-    tab = TAB(args.directory)
+    gtd = Gtd(args.directory)
 
     if args.action == ACTION_EDIT_TODAY:
-        tab.create_today_file()
-        open_editor(args.editor, tab.current_file)
+        gtd.create_today_file()
+        open_editor(args.editor, gtd.current_file)
 
 
 if __name__ == '__main__':

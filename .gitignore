@@ -4,3 +4,5 @@
 venv/
 *.swp
 __pycache__/
+build/
+dist/

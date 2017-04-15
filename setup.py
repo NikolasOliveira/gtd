@@ -38,9 +38,9 @@ class PyTest(TestCommand):
 
 
 setup(
-    name='tab',
+    name='gtd',
     version=version,
-    description="Manages a simple log book",
+    description="Manages a simple log book, to Get Things Done",
     long_description=read_file('README.rst'),
     cmdclass={'test': PyTest},
     classifiers=[

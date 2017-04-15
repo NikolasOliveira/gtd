@@ -1,4 +1,4 @@
-from tab.main import main
+from gtd.main import main
 
 if __name__ == '__main__':
     main()

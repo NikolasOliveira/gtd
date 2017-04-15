@@ -19,12 +19,11 @@ Basically, there are a file per day to write down 3 parts:
 - Accomplished: things that were finished today.
 - Backlog: Things to be accomplished in the future.
 
-You can see the initials of them: TAB, and this is the name of this program.
 
-Why to use TAB?
+Why to use GTD?
 ---------------
 
-Because it is very simple and easy to use. Just install it with ``pip install tab`` and edit the current day with ``python -m tab``. That's it.
+Because it is very simple and easy to use. Just install it with ``pip install gtd`` and edit the current day with ``python -m gtd``. That's it.
 
 The format is quite simple. Just the headers "TODO", "Accomplished" and "Backlog" for these tasks, and each task must start with a hyphen and space('- ').
 
@@ -56,60 +55,60 @@ TAB_ is fully usable. In the near future it should be able to generate statistic
 
 
 
-.. |travis| image:: https://img.shields.io/travis/magmax/tab/master.svg
+.. |travis| image:: https://img.shields.io/travis/magmax/gtd/master.svg
   :target: `Travis`_
   :alt: Travis results
 
-.. |coveralls| image:: https://img.shields.io/coveralls/magmax/tab.svg
+.. |coveralls| image:: https://img.shields.io/coveralls/magmax/gtd.svg
   :target: `Coveralls`_
   :alt: Coveralls results_
 
-.. |pip version| image:: https://img.shields.io/pypi/v/tab.svg
-    :target: https://pypi.python.org/pypi/tab
+.. |pip version| image:: https://img.shields.io/pypi/v/gtd.svg
+    :target: https://pypi.python.org/pypi/gtd
     :alt: Latest PyPI version
 
-.. |pip dm| image:: https://img.shields.io/pypi/dm/tab.svg
-    :target: https://pypi.python.org/pypi/tab
+.. |pip dm| image:: https://img.shields.io/pypi/dm/gtd.svg
+    :target: https://pypi.python.org/pypi/gtd
     :alt: Last month downloads from pypi
 
-.. |pip dw| image:: https://img.shields.io/pypi/dw/tab.svg
-    :target: https://pypi.python.org/pypi/tab
+.. |pip dw| image:: https://img.shields.io/pypi/dw/gtd.svg
+    :target: https://pypi.python.org/pypi/gtd
     :alt: Last week downloads from pypi
 
-.. |pip dd| image:: https://img.shields.io/pypi/dd/tab.svg
-    :target: https://pypi.python.org/pypi/tab
+.. |pip dd| image:: https://img.shields.io/pypi/dd/gtd.svg
+    :target: https://pypi.python.org/pypi/gtd
     :alt: Yesterday downloads from pypi
 
-.. |pip license| image:: https://img.shields.io/pypi/l/tab.svg
-    :target: https://pypi.python.org/pypi/tab
+.. |pip license| image:: https://img.shields.io/pypi/l/gtd.svg
+    :target: https://pypi.python.org/pypi/gtd
     :alt: License
 
-.. |pip wheel| image:: https://img.shields.io/pypi/wheel/tab.svg
-    :target: https://pypi.python.org/pypi/tab
+.. |pip wheel| image:: https://img.shields.io/pypi/wheel/gtd.svg
+    :target: https://pypi.python.org/pypi/gtd
     :alt: Wheel
 
-.. |pip pyversions| image::  	https://img.shields.io/pypi/pyversions/tab.svg
-    :target: https://pypi.python.org/pypi/tab
+.. |pip pyversions| image::  	https://img.shields.io/pypi/pyversions/gtd.svg
+    :target: https://pypi.python.org/pypi/gtd
     :alt: Python versions
 
-.. |pip implem| image::  	https://img.shields.io/pypi/implementation/tab.svg
-    :target: https://pypi.python.org/pypi/tab
+.. |pip implem| image::  	https://img.shields.io/pypi/implementation/gtd.svg
+    :target: https://pypi.python.org/pypi/gtd
     :alt: Python interpreters
 
-.. |status| image::	https://img.shields.io/pypi/status/tab.svg
-    :target: https://pypi.python.org/pypi/tab
+.. |status| image::	https://img.shields.io/pypi/status/gtd.svg
+    :target: https://pypi.python.org/pypi/gtd
     :alt: Status
 
-.. |version| image:: https://img.shields.io/pypi/v/tab.svg
-    :target: https://pypi.python.org/pypi/tab
+.. |version| image:: https://img.shields.io/pypi/v/gtd.svg
+    :target: https://pypi.python.org/pypi/gtd
     :alt: Status
 
 
 
-.. _Travis: https://travis-ci.org/magmax/tab
-.. _Coveralls: https://coveralls.io/r/magmax/tab
+.. _Travis: https://travis-ci.org/magmax/gtd
+.. _Coveralls: https://coveralls.io/r/magmax/gtd
 
 .. _@magmax9: https://twitter.com/magmax9
-.. _TAB: https://github.com/magmax/tab
+.. _TAB: https://github.com/magmax/gtd
 .. _`James Hood`: http://jlhood.com
 .. _`The Power of the TODO List`: http://jlhood.com/the-power-of-the-todo-list/
