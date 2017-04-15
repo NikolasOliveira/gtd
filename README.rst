@@ -36,14 +36,14 @@ The 'Backlog' section can have a due date, if they starts with ``[YYYY-MM-DD]``.
 
 Example::
 
-    TODO
+    TODO:
     - do cool things
     - do useful things
 
-    Accomplished
+    Accomplished:
     - do minor stuff
 
-    Backlog
+    Backlog:
     - [2049-02-31] Take on the world
 
 
