@@ -5,13 +5,14 @@ import re
 import argparse
 import datetime
 import logging
+import subprocess
 import yaml
 
 
 logger = logging.getLogger(__name__)
 
 
-class LogBook(object):
+class TAB(object):
     KEYWORD_TODO = 'TODO'
     KEYWORD_ACCOMPLISHED = 'Accomplished'
     KEYWORD_BACKLOG = 'Backlog'
@@ -70,7 +71,7 @@ class LogBook(object):
             operations = (
                 (self.KEYWORD_TODO, False),
                 (self.KEYWORD_ACCOMPLISHED, False),
-                (self.KEYWORD_BACKLOG, False),
+                (self.KEYWORD_BACKLOG, True),
             )
             for key, sort in operations:
                 data = content[key]
@@ -84,28 +85,52 @@ class LogBook(object):
                 fd.write('\n')
 
 
-def process(args):
-    for filename in os.listdir(args.directory):
-        print(filename)
+def open_editor(editor, filename):
+    if editor is None:
+        print(
+            'No editor was chosen.'
+            ' Please, define the environment variable "EDITOR"'
+            ' or just use the -d option to especify it.'
+        )
+        return
+    subprocess.call([editor, filename])
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Simple TODO list")
+    DEFAULT_EDITOR = os.environ.get('EDITOR')
+    DEFAULT_DIRECTORY = os.path.join(
+            os.path.expanduser('~'),
+            '.tab',
+            'backlog'
+    )
+
+    ACTION_EDIT_TODAY = 'today'
+    parser = argparse.ArgumentParser(description="Simple backlog")
     parser.add_argument(
-            '-k', '--key',
-            nargs='*',
-            default=['TODO', 'Accomplished', '*Future'],
-            help='Keywords that can be used. '
-            'Everything else will be discarted.'
+            'action',
+            default=ACTION_EDIT_TODAY,
+            nargs='?',
+            help='Action to be performed.'
+            ' By default, current file will be open'
     )
     parser.add_argument(
             '-d', '--directory',
-            default='.',
+            default=DEFAULT_DIRECTORY,
             help='Directory to be used'
+    )
+    parser.add_argument(
+            '-e', '--editor',
+            default=DEFAULT_EDITOR,
+            help='Editor to be used. "%s" by default.' % DEFAULT_EDITOR
     )
 
     args = parser.parse_args()
-    process(args)
+
+    tab = TAB(args.directory)
+
+    if args.action == ACTION_EDIT_TODAY:
+        tab.create_today_file()
+        open_editor(args.editor, tab.current_file)
 
 
 if __name__ == '__main__':

@@ -38,15 +38,15 @@ class PyTest(TestCommand):
 
 
 setup(
-    name='pylogbook',
+    name='tab',
     version=version,
     description="Manages a simple log book",
     long_description=read_file('README.rst'),
     cmdclass={'test': PyTest},
     classifiers=[
         # 'Development Status :: 1 - Planning',
-        'Development Status :: 2 - Pre-Alpha',
-        # 'Development Status :: 3 - Alpha',
+        # 'Development Status :: 2 - Pre-Alpha',
+        'Development Status :: 3 - Alpha',
         # 'Development Status :: 4 - Beta',
         # 'Development Status :: 5 - Production/Stable',
         # 'Development Status :: 6 - Mature',
@@ -55,13 +55,14 @@ setup(
         # 'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: Implementation :: CPython',
         # 'Programming Language :: Python :: Implementation :: PyPy',
         'License :: OSI Approved :: MIT License',
         'Topic :: Software Development :: Documentation',
         'Operating System :: OS Independent',
     ],
-    keywords='logbook scheduler todo',
+    keywords='logbook scheduler todo backlog',
     author='Miguel Ángel García',
     author_email='miguelangel.garcia@gmail.com',
     url='https://github.com/magmax/logbook',
@@ -80,6 +81,7 @@ setup(
         ],
     },
     install_requires=[
+        'pyyaml'
     ],
     entry_points={
         'console_scripts': [
