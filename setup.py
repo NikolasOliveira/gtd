@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 from setuptools.command.test import test as TestCommand
 
 
-version = "0.0.1"
+version = "0.0.2"
 
 
 def read_file(filename):
@@ -85,7 +85,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'logbook = logbook.__main__:main',
+            'gtd = gtd.__main__:main',
         ],
     },
 )

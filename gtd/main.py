@@ -28,6 +28,8 @@ class Gtd(object):
     @property
     def last_file(self):
         logger.debug('looking for files in %s' % self.directory)
+        if not os.path.exists(self.directory):
+            os.makedirs(self.directory)
         for filename in reversed(sorted(os.listdir(self.directory))):
             if re.match('^\d{4}-\d{2}-\d{2}-logbook.yaml$', filename):
                 logger.debug('Found file matching patter: %s' % filename)
