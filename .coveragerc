@@ -1,0 +1,7 @@
+[run]
+branch = True
+omit = gtd/__main__.py
+
+[report]
+precision = 2
+

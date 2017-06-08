@@ -7,6 +7,7 @@ import datetime
 import logging
 import subprocess
 import yaml
+import functools
 
 
 logger = logging.getLogger(__name__)
@@ -57,14 +58,18 @@ class Gtd(object):
         content[self.KEYWORD_ACCOMPLISHED] = None
         backlog = []
 
-        for line in content[self.KEYWORD_BACKLOG]:
+        for entry in content[self.KEYWORD_BACKLOG]:
+            if isinstance(entry, dict):
+                line = list(entry.keys())[0]
+            else:
+                line = entry
             m = re.match('\[(?P<date>\d{4}-\d{2}-\d{2})\](?P<msg>.*)', line)
             if not m:
-                backlog.append(line)
+                backlog.append(entry)
                 continue
             date = datetime.datetime.strptime(m.group('date'), '%Y-%m-%d')
             if date > datetime.datetime.now():
-                backlog.append(line)
+                backlog.append(entry)
                 continue
             content[self.KEYWORD_TODO].append(m.group('msg').strip())
         content[self.KEYWORD_BACKLOG] = backlog
@@ -80,7 +85,13 @@ class Gtd(object):
                 fd.write('%s:\n' % key)
                 if data:
                     if sort:
-                        data.sort()
+                        cmp_fn = (
+                            lambda x:
+                            list(x.keys())[0]
+                            if isinstance(x, dict) 
+                            else x
+                        )
+                        data.sort(key=cmp_fn)
                     fd.write(yaml.dump(data, default_flow_style=False))
                 else:
                     fd.write('\n')
