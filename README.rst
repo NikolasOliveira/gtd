@@ -15,7 +15,7 @@ I've been using a TODO list for years in paper, inspired by the book "The Person
 
 Basically, there are a file per day to write down 3 parts:
 
-- TODO: This is the most important part: things to be accomplished today.
+- In progress: This is the most important part: things to be accomplished today.
 - Accomplished: things that were finished today.
 - Backlog: Things to be accomplished in the future.
 
@@ -25,18 +25,18 @@ Why to use GTD?
 
 Because it is very simple and easy to use. Just install it with ``pip install gtd`` and edit the current day with ``python -m gtd``. That's it.
 
-The format is quite simple. Just the headers "TODO", "Accomplished" and "Backlog" for these tasks, and each task must start with a hyphen and space('- ').
+The format is quite simple. Just the headers "In progress", "Accomplished" and "Backlog" for these tasks, and each task must start with a hyphen and space('- ').
 
 Each day, it will copy the previous file, and:
 
 - it will remove the 'Accomplished' section.
-- it will move to the 'TODO' section the tasks from the 'Backlog' section that with a due date previous to current date.
+- it will move to the 'In progress' section the tasks from the 'Backlog' section that with a due date previous to current date.
 
 The 'Backlog' section can have a due date, if they starts with ``[YYYY-MM-DD]``.
 
 Example::
 
-    TODO:
+    In progress:
     - do cool things
     - do useful things
 

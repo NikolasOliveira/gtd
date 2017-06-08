@@ -29,13 +29,15 @@ class GtdTest(unittest.TestCase):
 
     def test_load_file_that_does_not_exist(self):
         content = self.gtd.load_file(os.path.join(EXAMPLE1_DIR, 'fake'))
-        assert content == dict(TODO=[], Accomplished=[], Backlog=[])
-
-    def test_load_file(self):
+        assert content == {
+            "In progress": [],
+            "Accomplished": [],
+            "Backlog": []
+        }
         filename = os.path.join(EXAMPLE1_DIR, '2017-01-01-logbook.yaml')
         content = self.gtd.load_file(filename)
-        assert 'TODO' in content
-        assert len(content['TODO']) == 1
+        assert 'In progress' in content
+        assert len(content['In progress']) == 1
         assert 'Accomplished' in content
         assert content['Accomplished'] == []
         assert 'Backlog' in content
@@ -77,20 +79,21 @@ class BacklogTest(unittest.TestCase):
             yaml.dump(data, fd)
         self.gtd.create_today_file()
         content = self.gtd.load_file(self.gtd.current_file)
-        assert not content['TODO']
+        assert not content['In progress']
 
     def test_date_will_move_to_todo(self):
         filename = os.path.join(self.directory, "2017-01-01-logbook.yaml")
         today = datetime.datetime.now().strftime("%Y-%m-%d")
+        task = '[%s] whatever' % today
         data = dict(
-            Backlog=['[%s] whatever' % today]
+            Backlog=[task]
         )
         with open(filename, 'w+') as fd:
             yaml.dump(data, fd)
         self.gtd.create_today_file()
         content = self.gtd.load_file(self.gtd.current_file)
         assert not content['Backlog']
-        assert content['TODO'] == ['whatever']
+        assert content['In progress'] == [task]
 
     def test_several_dates(self):
         filename = os.path.join(self.directory, "2017-01-01-logbook.yaml")
@@ -114,4 +117,4 @@ class BacklogTest(unittest.TestCase):
         self.gtd.create_today_file()
         content = self.gtd.load_file(self.gtd.current_file)
         assert content['Backlog'] == [future_task, any_task]
-        assert content['TODO'] == ['past', 'current']
+        assert content['In progress'] == [current_task, past_task]

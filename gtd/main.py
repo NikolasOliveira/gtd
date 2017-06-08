@@ -7,7 +7,6 @@ import datetime
 import logging
 import subprocess
 import yaml
-import functools
 
 
 logger = logging.getLogger(__name__)
@@ -15,6 +14,7 @@ logger = logging.getLogger(__name__)
 
 class Gtd(object):
     KEYWORD_TODO = 'TODO'
+    KEYWORD_INPROGRESS = 'In progress'
     KEYWORD_ACCOMPLISHED = 'Accomplished'
     KEYWORD_BACKLOG = 'Backlog'
 
@@ -45,15 +45,22 @@ class Gtd(object):
                 return yaml.load(fd)
         content = load()
         for key in (
-                self.KEYWORD_TODO,
+                self.KEYWORD_INPROGRESS,
                 self.KEYWORD_ACCOMPLISHED,
                 self.KEYWORD_BACKLOG,
                 ):
             if key not in content or content[key] is None:
                 content[key] = []
+        if self.KEYWORD_TODO in content:
+            content[self.KEYWORD_INPROGRESS].extend(
+                content[self.KEYWORD_TODO]
+            )
         return content
 
     def create_today_file(self):
+        if self.last_file == self.current_file:
+            # already created
+            return
         content = self.load_file(self.last_file)
         content[self.KEYWORD_ACCOMPLISHED] = None
         backlog = []
@@ -71,15 +78,12 @@ class Gtd(object):
             if date > datetime.datetime.now():
                 backlog.append(entry)
                 continue
-            content[self.KEYWORD_TODO].append(m.group('msg').strip())
+            content[self.KEYWORD_INPROGRESS].insert(0, entry)
         content[self.KEYWORD_BACKLOG] = backlog
 
-        if self.last_file == self.current_file:
-            # it is a reopen
-            return
         with open(self.current_file, 'w+') as fd:
             operations = (
-                (self.KEYWORD_TODO, False),
+                (self.KEYWORD_INPROGRESS, False),
                 (self.KEYWORD_ACCOMPLISHED, False),
                 (self.KEYWORD_BACKLOG, True),
             )
@@ -91,7 +95,7 @@ class Gtd(object):
                         cmp_fn = (
                             lambda x:
                             list(x.keys())[0]
-                            if isinstance(x, dict) 
+                            if isinstance(x, dict)
                             else x
                         )
                         data.sort(key=cmp_fn)
