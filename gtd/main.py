@@ -74,6 +74,9 @@ class Gtd(object):
             content[self.KEYWORD_TODO].append(m.group('msg').strip())
         content[self.KEYWORD_BACKLOG] = backlog
 
+        if self.last_file == self.current_file:
+            # it is a reopen
+            return
         with open(self.current_file, 'w+') as fd:
             operations = (
                 (self.KEYWORD_TODO, False),
