@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+import sys
 import re
 import argparse
 import datetime
@@ -175,6 +176,13 @@ def open_editor(editor, filename):
     subprocess.call([editor, filename])
 
 
+def log_error_and_exit_user(msg, retcode=1):
+    """Logs an error message <msg> to the user on stderr then exits the program
+    with return code <retcode> (with the default value of 1)"""
+    sys.stderr.write('%s\n' % msg)
+    sys.exit(retcode)
+
+
 def main():
     DEFAULT_EDITOR = os.environ.get('EDITOR')
     DEFAULT_DIRECTORY = os.path.join(
@@ -183,15 +191,29 @@ def main():
             'backlog'
     )
 
-    ACTION_EDIT_TODAY = 'today'
-    ACTION_SUMMARY = 'summary'
+    EDIT_ACTION_DEFAULT = 'today'
     parser = argparse.ArgumentParser(description="Simple backlog")
-    parser.add_argument(
-            'action',
-            default=ACTION_EDIT_TODAY,
+    # Add actions as mutually exclusive group of independent options. This way
+    # they can have their own values (e.g. Summary takes an int which is number
+    # of days to summarize, whereas edit takes a day as string) but can't be
+    # used at the same time.
+    # Keep the default behaviour of opening the current day to edit when no
+    # options are specified.
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument(
+            '-e', '--edit',
             nargs='?',
-            help='Action to be performed.'
-            ' By default, current file will be open'
+            const=EDIT_ACTION_DEFAULT,
+            help='Edit a GTD log file. By default, the current file will be '
+                 'opened for editing'
+    )
+    group.add_argument(
+            '-s', '--summary',
+            nargs='?',
+            const=5,
+            type=int,
+            help='Build a summary of the accomplished items over the past N '
+                 'days. By default, the past 5 days are summarized'
     )
     parser.add_argument(
             '-d', '--directory',
@@ -199,7 +221,7 @@ def main():
             help='Directory to be used. "%s" by default' % DEFAULT_DIRECTORY
     )
     parser.add_argument(
-            '-e', '--editor',
+            '--editor',
             default=DEFAULT_EDITOR,
             help='Editor to be used. "%s" by default.' % DEFAULT_EDITOR
     )
@@ -208,13 +230,24 @@ def main():
 
     gtd = Gtd(args.directory)
 
-    if args.action == ACTION_EDIT_TODAY:
+    if args.edit:
+        if args.edit == EDIT_ACTION_DEFAULT:
+            gtd.create_today_file()
+            open_editor(args.editor, gtd.current_file)
+        else:
+            log_error_and_exit_user('Only editing of Today is supported '
+                                    'currently')
+    elif args.summary is not None:
+        if not args.summary > 0:
+            log_error_and_exit_user('Number of days for summary must be a '
+                                    'positive integer')
+        gtd.generate_n_day_summary(args.summary)
+        open_editor(args.editor, gtd.summary_file)
+    else:
+        # The default case if no explicit options are provided is to just edit
+        # today's gtd logfile
         gtd.create_today_file()
         open_editor(args.editor, gtd.current_file)
-    elif args.action == ACTION_SUMMARY:
-        gtd.generate_n_day_summary(5)
-        open_editor(args.editor, gtd.summary_file)
-
 
 
 if __name__ == '__main__':
