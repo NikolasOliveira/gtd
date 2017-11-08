@@ -46,6 +46,8 @@ Example::
     Backlog:
     - [2049-02-31] Take on the world
 
+A Summary of the items you've accomplished for the past N days can be computed (E.g. for sync up meetings) with ``python -m gtd --sumary <number of days>``
+
 
 Roadmap
 -------
