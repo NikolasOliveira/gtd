@@ -18,6 +18,8 @@ class Gtd(object):
     KEYWORD_INPROGRESS = 'In progress'
     KEYWORD_ACCOMPLISHED = 'Accomplished'
     KEYWORD_BACKLOG = 'Backlog'
+    LOGFILE_TOP_LEVEL_FIELDS = frozenset([KEYWORD_BACKLOG, KEYWORD_INPROGRESS,
+                                          KEYWORD_ACCOMPLISHED])
 
     def __init__(self, directory):
         self.directory = directory
@@ -34,13 +36,16 @@ class Gtd(object):
     @property
     def last_file(self):
         """Return the last file in the logbook directory"""
-        return self.last_n_files(1)[0]
+        last_n_files = self.last_n_files(1)
+        if last_n_files and len(last_n_files) > 0:
+            return last_n_files[0]
 
     def last_n_files(self, num_files):
         """Search the directory for gtd files, returning the <num_files>
         latest files"""
-        assert num_files>0, "Number of files must be greater than 0"
-        logger.debug('Looking for %d files in %s' % (num_files, self.directory))
+        assert num_files > 0, "Number of files must be greater than 0"
+        logger.debug('Looking for %d files in %s'
+                     % (num_files, self.directory))
         if not os.path.exists(self.directory):
             os.makedirs(self.directory)
         files_found = []
@@ -58,24 +63,23 @@ class Gtd(object):
             return files_found
         logger.debug('no files found')
 
-    def load_file(self, filename):
+    def load_file(self, filename, is_summary=False):
+        """Load a logfile, <filename>, from disk. If <is_summary> then don't
+        add the log file fields accomplished, backlog, etc"""
         def load():
             if not filename or not os.path.exists(filename):
                 return dict()
             with open(filename) as fd:
                 return yaml.load(fd)
         content = load()
-        for key in (
-                self.KEYWORD_INPROGRESS,
-                self.KEYWORD_ACCOMPLISHED,
-                self.KEYWORD_BACKLOG,
-                ):
-            if key not in content or content[key] is None:
-                content[key] = []
-        if self.KEYWORD_TODO in content:
-            content[self.KEYWORD_INPROGRESS].extend(
-                content[self.KEYWORD_TODO]
-            )
+        if not is_summary:
+            for key in self.LOGFILE_TOP_LEVEL_FIELDS:
+                if key not in content or content[key] is None:
+                    content[key] = []
+            if self.KEYWORD_TODO in content:
+                content[self.KEYWORD_INPROGRESS].extend(
+                    content[self.KEYWORD_TODO]
+                )
         return content
 
     def create_today_file(self):
@@ -137,7 +141,6 @@ class Gtd(object):
         if match_obj:
             return datetime.datetime.strptime(match_obj.group('date'),
                                               '%Y-%m-%d')
-
 
     def generate_n_day_summary(self, num_days):
         """Generate a summary of the work done over <num_days>"""

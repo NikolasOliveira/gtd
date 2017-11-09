@@ -39,7 +39,7 @@ class GtdTest(unittest.TestCase):
         assert 'In progress' in content
         assert len(content['In progress']) == 1
         assert 'Accomplished' in content
-        assert content['Accomplished'] == []
+        assert content['Accomplished'] == ['cool accomplished thing']
         assert 'Backlog' in content
         assert content['Backlog'] == []
 
@@ -57,6 +57,43 @@ class FromScratchTest(unittest.TestCase):
             assert os.path.exists(self.gtd.current_file)
         finally:
             shutil.rmtree(directory)
+
+
+class SummaryTest(unittest.TestCase):
+    def setUp(self):
+        self.gtd = Gtd(EXAMPLE1_DIR)
+
+        if os.path.exists(self.gtd.current_file):
+            os.remove(self.gtd.current_file)
+        if os.path.exists(self.gtd.summary_file):
+            os.remove(self.gtd.summary_file)
+
+    def tearDown(self):
+        os.remove(self.gtd.summary_file)
+
+    def test_summary_against_static_asset(self):
+        """Generate a summary for the test logfile dir, and compare it against
+        the contents of each logfile."""
+        self.gtd.generate_n_day_summary(5)
+        summary_file_yaml = self.gtd.load_file(self.gtd.summary_file,
+                                               is_summary=True)
+        log_files = self.gtd.last_n_files(5)
+
+        # We should have has many logfiles as there are items in the summary
+        # (since each example logfile has an accomplished item)
+        assert len(summary_file_yaml.items()) == len(log_files)
+
+        # Make sure the accomplished contents from each logfile made it into
+        # the summary.
+        for log_file in log_files:
+            log_file_yaml = self.gtd.load_file(log_file)
+            assert log_file_yaml[self.gtd.KEYWORD_ACCOMPLISHED] in \
+                summary_file_yaml.values()
+
+        # Check that the Accomplished, Backlog etc, fields are not present in
+        # the summary
+        for key in self.gtd.LOGFILE_TOP_LEVEL_FIELDS:
+            assert key not in summary_file_yaml
 
 
 class BacklogTest(unittest.TestCase):
